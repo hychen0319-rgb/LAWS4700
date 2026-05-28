@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starting in Tech — Legal Handbook, Toolkit & Assessment</title>
+<style>
+  :root {
+    --bg:         #faf9f6;
+    --surface:    #ffffff;
+    --ink:        #1a1916;
+    --ink-mid:    #444240;
+    --ink-light:  #888480;
+    --rule:       #ccc8bc;
+    --rule-light: #e4e0d4;
+    --beige-box:  #f5f1e8;
+    --beige-bd:   #d6cfbc;
+    --navy:       #1b2a42;
+    --navy-mid:   #2c4166;
+    --correct:    #1a3018;
+    --correct-bg: #edf4ed;
+    --correct-bd: #4a7a4a;
+    --wrong:      #3a1414;
+    --wrong-bg:   #f5edec;
+    --wrong-bd:   #9a4848;
+    --tnr:        'Times New Roman', Times, serif;
+    --mono:       'Courier New', Courier, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--tnr); font-size: 16px; line-height: 1.7; min-height: 100vh;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead { background: var(--navy); color: #e8e4d8; }
+  .masthead-inner { max-width: 740px; margin: 0 auto; padding: 44px 36px 32px; }
+  .masthead-kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(232,228,216,0.38); margin-bottom: 14px;
+  }
+  .masthead h1 {
+    font-family: var(--tnr); font-size: clamp(21px,3.2vw,30px); font-weight: bold;
+    line-height: 1.25; color: #f0ede4; margin-bottom: 8px;
+  }
+  .masthead h1 span {
+    display: block; font-weight: normal; font-style: italic;
+    font-size: 0.8em; color: rgba(240,237,228,0.55); margin-top: 4px;
+  }
+  .masthead-desc {
+    font-family: var(--tnr); font-size: 13px; font-style: italic;
+    color: rgba(232,228,216,0.44); line-height: 1.65;
+  }
+
+  /* ── TAB BAR ── */
+  .tab-bar {
+    background: var(--navy); border-top: 1px solid rgba(255,255,255,0.07);
+    position: sticky; top: 0; z-index: 300;
+  }
+  .tab-bar-inner {
+    max-width: 740px; margin: 0 auto; padding: 0 36px;
+    display: flex; overflow-x: auto; gap: 0;
+    scrollbar-width: none;
+  }
+  .tab-bar-inner::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: transparent; border: none; padding: 13px 20px 12px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.13em;
+    text-transform: uppercase; color: rgba(232,228,216,0.4);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: color 0.14s, border-color 0.14s; white-space: nowrap; flex-shrink: 0;
+  }
+  .tab-btn:hover { color: rgba(232,228,216,0.72); }
+  .tab-btn.active { color: #f0ede4; border-bottom-color: #f0ede4; }
+
+  /* ── SECTION PANELS ── */
+  .section-panel { display: none; }
+  .section-panel.active { display: block; }
+  .main { max-width: 740px; margin: 0 auto; padding: 44px 36px 96px; }
+
+  /* ── SECTION HEADING ── */
+  .section-heading { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+  .section-heading .eyebrow {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--ink-light); margin-bottom: 8px;
+  }
+  .section-heading h2 {
+    font-family: var(--tnr); font-size: clamp(20px,3vw,26px);
+    font-weight: bold; line-height: 1.25; color: var(--ink);
+  }
+  .section-heading p { margin-top: 8px; font-size: 14px; color: var(--ink-mid); font-style: italic; line-height: 1.65; }
+
+  /* ── STATUS BAR ── */
+  .statusbar { background: var(--surface); border-bottom: 1px solid var(--rule); }
+  .statusbar-inner {
+    max-width: 740px; margin: 0 auto; padding: 0 36px;
+    height: 42px; display: flex; align-items: center; gap: 18px;
+  }
+  .status-text { font-family: var(--mono); font-size: 10px; color: var(--ink-light); letter-spacing: 0.1em; white-space: nowrap; min-width: 100px; }
+  .bar-track { flex: 1; height: 1px; background: var(--rule-light); position: relative; }
+  .bar-fill { position: absolute; left:0; top:0; bottom:0; background: var(--navy); transition: width 0.45s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+  .status-score { font-family: var(--mono); font-size: 10px; color: var(--ink-light); letter-spacing: 0.08em; white-space: nowrap; min-width: 70px; text-align: right; }
+
+  /* ── QUIZ ── */
+  .question-card { display: none; animation: appear 0.25s ease both; }
+  .question-card.active { display: block; }
+  @keyframes appear { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+  .q-header { display:flex; align-items:center; gap:14px; margin-bottom:24px; padding-bottom:14px; border-bottom:1px solid var(--rule); }
+  .q-chapter-tag { font-family:var(--mono); font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--surface); background:var(--navy-mid); padding:3px 8px 4px; }
+  .q-counter { font-family:var(--mono); font-size:10px; color:var(--ink-light); letter-spacing:0.1em; margin-left:auto; }
+  .q-text { font-family:var(--tnr); font-size:clamp(16px,2.4vw,19px); font-weight:bold; line-height:1.5; color:var(--ink); margin-bottom:28px; }
+  .q-text em { font-style:italic; font-weight:normal; color:var(--ink-mid); }
+  .options { border:1px solid var(--rule); background:var(--surface); }
+  .option-btn { width:100%; background:var(--surface); border:none; border-bottom:1px solid var(--rule-light); padding:14px 16px; cursor:pointer; text-align:left; font-family:var(--tnr); font-size:14px; line-height:1.6; color:var(--ink-mid); display:grid; grid-template-columns:40px 1fr auto; align-items:start; gap:0 8px; transition:background 0.1s; }
+  .option-btn:last-child { border-bottom:none; }
+  .option-btn:hover:not(.disabled) { background:#f5f2eb; }
+  .option-letter { font-family:var(--mono); font-size:10px; letter-spacing:0.08em; color:var(--rule); padding-top:3px; text-align:center; transition:color 0.1s; grid-column:1; }
+  .option-text { grid-column:2; }
+  .option-badge { grid-column:3; font-family:var(--mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:3px 7px; white-space:nowrap; align-self:start; margin-top:3px; opacity:0; pointer-events:none; }
+  .option-btn.correct { background:var(--correct-bg); border-color:var(--correct-bd); }
+  .option-btn.correct .option-letter { color:var(--correct); font-weight:bold; }
+  .option-btn.correct .option-badge { opacity:1; background:var(--correct-bd); color:#fff; }
+  .option-btn.wrong { background:var(--wrong-bg); border-color:var(--wrong-bd); }
+  .option-btn.wrong .option-letter { color:var(--wrong); font-weight:bold; }
+  .option-btn.wrong .option-badge { opacity:1; background:var(--wrong-bd); color:#fff; }
+  .option-btn.missed { background:#f2f6f2; border-color:var(--correct-bd); opacity:0.72; }
+  .option-btn.missed .option-letter { color:var(--correct); }
+  .option-btn.disabled { cursor:default; pointer-events:none; }
+  .annotation { display:none; margin-top:20px; padding:18px 20px; background:var(--beige-box); border:1px solid var(--beige-bd); border-left:3px solid var(--navy); animation:appear 0.2s ease both; }
+  .annotation.visible { display:block; }
+  .annotation-label { font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--navy-mid); margin-bottom:8px; }
+  .annotation p { font-family:var(--tnr); font-size:13.5px; line-height:1.72; color:var(--ink-mid); font-style:italic; }
+  .annotation strong { color:var(--ink); font-style:normal; }
+  .nav-row { margin-top:24px; display:flex; justify-content:flex-end; }
+  .next-btn { display:none; background:var(--navy); color:#e8e4d8; border:none; padding:10px 22px 11px; font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer; transition:background 0.12s; }
+  .next-btn.visible { display:block; }
+  .next-btn:hover { background:var(--navy-mid); }
+
+  /* Results */
+  .results { display:none; }
+  .results.active { display:block; animation:appear 0.3s ease both; }
+  .results-masthead { border:1px solid var(--rule); margin-bottom:36px; }
+  .results-top { background:var(--navy); color:#e8e4d8; padding:36px 32px 30px; }
+  .results-eyebrow { font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(232,228,216,0.38); margin-bottom:14px; }
+  .results-verdict { font-family:var(--tnr); font-size:clamp(26px,4.5vw,38px); font-weight:bold; line-height:1.2; margin-bottom:6px; color:#f0ede4; }
+  .results-frac { font-family:var(--mono); font-size:11px; color:rgba(232,228,216,0.4); margin-bottom:16px; letter-spacing:0.08em; }
+  .results-msg { font-family:var(--tnr); font-size:14px; color:rgba(232,228,216,0.65); max-width:440px; line-height:1.75; font-style:italic; }
+  .results-bottom { padding:24px 32px; background:var(--beige-box); border-top:1px solid var(--beige-bd); }
+  .results-bottom-label { font-family:var(--mono); font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-light); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid var(--beige-bd); }
+  .chapter-row { display:flex; align-items:center; gap:14px; padding:10px 0; border-bottom:1px solid var(--rule-light); }
+  .chapter-row:last-child { border-bottom:none; }
+  .chapter-name { font-family:var(--tnr); font-size:13px; color:var(--ink-mid); flex:1; line-height:1.4; }
+  .chapter-pips { display:flex; gap:4px; }
+  .pip { width:19px; height:19px; border-radius:50%; border:1px solid var(--rule); font-family:var(--mono); font-size:8px; display:flex; align-items:center; justify-content:center; color:var(--rule); }
+  .pip.right { background:var(--correct-bg); border-color:var(--correct-bd); color:var(--correct); font-weight:bold; }
+  .pip.wrong { background:var(--wrong-bg); border-color:var(--wrong-bd); color:var(--wrong-bd); }
+  .restart-btn { display:block; width:100%; background:transparent; border:1px solid var(--navy); color:var(--navy); padding:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer; transition:all 0.13s; margin-top:6px; }
+  .restart-btn:hover { background:var(--navy); color:#e8e4d8; }
+
+  /* ── GLOSSARY ── */
+  .glossary-letter-group { margin-bottom:30px; }
+  .glossary-letter { font-family:var(--tnr); font-size:22px; font-weight:bold; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--navy); display:block; }
+  .glossary-entry { padding:15px 0; border-bottom:1px solid var(--rule-light); display:grid; grid-template-columns:200px 1fr; gap:0 24px; }
+  .glossary-entry:last-child { border-bottom:none; }
+  .glossary-term { font-family:var(--tnr); font-size:14px; font-weight:bold; color:var(--ink); padding-top:1px; line-height:1.5; }
+  .glossary-def { font-family:var(--tnr); font-size:14px; color:var(--ink-mid); line-height:1.7; }
+  .glossary-def em { font-style:italic; }
+
+  /* ── BIBLIOGRAPHY ── */
+  .bib-section { margin-bottom:40px; }
+  .bib-section-title { font-family:var(--mono); font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-light); padding-bottom:10px; border-bottom:1px solid var(--rule); margin-bottom:20px; }
+  .bib-entry { padding:13px 0 13px 20px; border-bottom:1px solid var(--rule-light); border-left:2px solid var(--rule-light); margin-bottom:2px; font-family:var(--tnr); font-size:13.5px; color:var(--ink-mid); line-height:1.72; transition:border-color 0.12s; }
+  .bib-entry:hover { border-left-color:var(--navy); }
+  .bib-entry:last-child { border-bottom:none; }
+  .bib-entry strong { color:var(--ink); }
+  .bib-entry em { font-style:italic; }
+  .bib-tag { display:inline-block; font-family:var(--mono); font-size:8.5px; letter-spacing:0.12em; text-transform:uppercase; background:var(--beige-box); color:var(--ink-light); border:1px solid var(--beige-bd); padding:2px 6px; margin-bottom:4px; margin-left:-20px; margin-right:8px; }
+
+  /* ══════════════════════════════════════
+     TOOLS STYLES
+  ══════════════════════════════════════ */
+  .tools-grid { display:flex; flex-direction:column; gap:32px; }
+
+  .tool-card {
+    border:1px solid var(--rule); background:var(--surface);
+    overflow:hidden;
+  }
+  .tool-card-header {
+    background:var(--navy); padding:20px 24px;
+    display:flex; align-items:flex-start; gap:16px;
+  }
+  .tool-number {
+    font-family:var(--mono); font-size:10px; letter-spacing:0.14em;
+    color:rgba(232,228,216,0.4); text-transform:uppercase;
+    min-width:56px; padding-top:2px;
+  }
+  .tool-header-text {}
+  .tool-title {
+    font-family:var(--tnr); font-size:17px; font-weight:bold;
+    color:#f0ede4; line-height:1.25; margin-bottom:4px;
+  }
+  .tool-purpose {
+    font-family:var(--tnr); font-size:12.5px; font-style:italic;
+    color:rgba(232,228,216,0.52); line-height:1.5;
+  }
+  .tool-body { padding:24px; }
+
+  /* Form */
+  .tool-form { display:flex; flex-direction:column; gap:16px; margin-bottom:20px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px 16px; }
+  .form-row.single { grid-template-columns:1fr; }
+  .form-group { display:flex; flex-direction:column; gap:5px; }
+  .form-label {
+    font-family:var(--mono); font-size:9px; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--ink-light);
+  }
+  .form-input, .form-select, .form-textarea {
+    font-family:var(--mono); font-size:12px; color:var(--ink);
+    background:var(--bg); border:1px solid var(--rule);
+    padding:8px 10px; outline:none; width:100%;
+    transition:border-color 0.12s;
+    line-height:1.5;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--navy); }
+  .form-textarea { resize:vertical; min-height:60px; }
+  .form-select { cursor:pointer; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; padding-right:28px; }
+
+  /* Checkboxes */
+  .checklist { display:flex; flex-direction:column; gap:0; border:1px solid var(--rule); margin-bottom:20px; }
+  .check-item {
+    display:flex; align-items:flex-start; gap:14px;
+    padding:13px 16px; border-bottom:1px solid var(--rule-light);
+    cursor:pointer; transition:background 0.1s;
+  }
+  .check-item:last-child { border-bottom:none; }
+  .check-item:hover { background:var(--beige-box); }
+  .check-item input[type=checkbox] { margin-top:3px; accent-color:var(--navy); width:14px; height:14px; flex-shrink:0; cursor:pointer; }
+  .check-item-label { font-family:var(--tnr); font-size:14px; color:var(--ink-mid); line-height:1.55; }
+  .check-item-label strong { color:var(--ink); font-weight:bold; }
+  .check-item.checked .check-item-label { color:var(--ink-light); text-decoration:line-through; text-decoration-color:var(--rule); }
+  .check-progress { font-family:var(--mono); font-size:10px; color:var(--ink-light); letter-spacing:0.1em; margin-bottom:16px; }
+  .check-progress span { color:var(--navy); font-weight:bold; }
+
+  /* Output preview */
+  .output-block {
+    background:var(--bg); border:1px solid var(--rule);
+    border-left:3px solid var(--navy);
+  }
+  .output-label {
+    font-family:var(--mono); font-size:9px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--ink-light);
+    padding:10px 14px 8px; border-bottom:1px solid var(--rule-light);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .copy-btn {
+    font-family:var(--mono); font-size:9px; letter-spacing:0.1em;
+    text-transform:uppercase; background:var(--navy); color:#e8e4d8;
+    border:none; padding:4px 10px; cursor:pointer; transition:background 0.12s;
+  }
+  .copy-btn:hover { background:var(--navy-mid); }
+  .copy-btn.copied { background:var(--correct); }
+  .output-pre {
+    font-family:var(--mono); font-size:11.5px; color:var(--ink-mid);
+    line-height:1.7; padding:16px 14px; white-space:pre-wrap;
+    word-break:break-word; min-height:80px;
+  }
+  .output-pre .placeholder { color:var(--rule); }
+
+  /* Reset button */
+  .tool-reset {
+    font-family:var(--mono); font-size:9px; letter-spacing:0.12em;
+    text-transform:uppercase; background:transparent;
+    border:1px solid var(--rule); color:var(--ink-light);
+    padding:6px 14px; cursor:pointer; margin-top:14px;
+    transition:all 0.12s;
+  }
+  .tool-reset:hover { border-color:var(--navy); color:var(--navy); }
+
+  /* ── COLOPHON ── */
+  .colophon { margin-top:48px; padding-top:16px; border-top:1px solid var(--rule-light); font-family:var(--mono); font-size:10px; color:#c0bcb4; letter-spacing:0.06em; line-height:1.9; text-align:center; }
+
+  @media (max-width:580px) {
+    .masthead-inner,.main,.statusbar-inner,.tab-bar-inner { padding-left:18px; padding-right:18px; }
+    .results-top,.results-bottom { padding:24px 18px; }
+    .glossary-entry { grid-template-columns:1fr; gap:4px 0; }
+    .form-row { grid-template-columns:1fr; }
+    .tool-card-header { flex-direction:column; gap:8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-kicker">Starting in Tech &nbsp; Legal Handbook, Toolkit & Assessment</div>
+    <h1>
+      Legal Reference for New IT Professionals
+      <span>Handbook Companion: Glossary, Bibliography, Practical Tools & Knowledge Assessment</span>
+    </h1>
+    <p class="masthead-desc">A self-contained legal reference covering intellectual property, privacy, and confidentiality for developers starting their first professional role.</p>
+  </div>
+</header>
+
+<!-- TAB NAVIGATION -->
+<nav class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="tab-btn active"  onclick="switchTab('quiz')">Assessment</button>
+    <button class="tab-btn"         onclick="switchTab('tools')">Practical Tools</button>
+    <button class="tab-btn"         onclick="switchTab('glossary')">Glossary</button>
+    <button class="tab-btn"         onclick="switchTab('bibliography')">Bibliography</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     ASSESSMENT PANEL
+══════════════════════════════════════════ -->
+<div id="panel-quiz" class="section-panel active">
+  <div class="statusbar">
+    <div class="statusbar-inner">
+      <span class="status-text" id="statusLabel">Question 1 of 12</span>
+      <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+      <span class="status-score" id="statusScore">0 correct</span>
+    </div>
+  </div>
+  <div class="main">
+    <div id="quizContainer"></div>
+    <div class="results" id="results"></div>
+    <p class="colophon">Starting in Tech &nbsp; Legal Handbook, Toolkit & Assessment<br>For educational purposes only. Does not constitute legal advice.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TOOLS PANEL
+══════════════════════════════════════════ -->
+<div id="panel-tools" class="section-panel">
+  <div class="main">
+    <div class="section-heading">
+      <div class="eyebrow">Practical Tools</div>
+      <h2>Workplace Legal Templates</h2>
+      <p>Fill in the fields below to generate ready-to-use templates. Copy the output directly into your PR description, commit message, or email client.</p>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- ─────────────────────────────────────
+           TOOL A: PRE-FLIGHT CHECKLIST
+      ───────────────────────────────────── -->
+      <div class="tool-card" id="toolA">
+        <div class="tool-card-header">
+          <span class="tool-number">Tool A</span>
+          <div class="tool-header-text">
+            <div class="tool-title">Pre-flight External Code Checklist</div>
+            <div class="tool-purpose">Run before merging any third-party code into your employer's codebase. Prevents licence and provenance errors that can expose your employer to legal liability.</div>
+          </div>
+        </div>
+        <div class="tool-body">
+
+          <p class="check-progress" id="checkProgress">
+            <span id="checkDone">0</span> of 6 items confirmed
+          </p>
+
+          <div class="checklist" id="preflightList">
+            <label class="check-item" id="chk0">
+              <input type="checkbox" onchange="updateChecklist()">
+              <span class="check-item-label"><strong>Licence identified.</strong> I have located and read the licence file for every snippet, library, or repository I am bringing in.</span>
+            </label>
+            <label class="check-item" id="chk1">
+              <input type="checkbox" onchange="updateChecklist()">
+              <span class="check-item-label"><strong>Licence compatible.</strong> The licence permits use in this codebase. GPL-licensed code has been flagged with my manager before inclusion.</span>
+            </label>
+            <label class="check-item" id="chk2">
+              <input type="checkbox" onchange="updateChecklist()">
+              <span class="check-item-label"><strong>Attribution added.</strong> Required copyright notices and licence files have been included in the repository.</span>
+            </label>
+            <label class="check-item" id="chk3">
+              <input type="checkbox" onchange="updateChecklist()">
+              <span class="check-item-label"><strong>Not from a prior employer.</strong> None of this code originates from a previous job. I wrote it fresh or sourced it from a public, licenced repository.</span>
+            </label>
+            <label class="check-item" id="chk4">
+              <input type="checkbox" onchange="updateChecklist()">
+              <span class="check-item-label"><strong>University IP checked.</strong> Any code from my studies has been checked against my university's IP policy, or has been rewritten from scratch.</span>
+            </label>
+            <label class="check-item" id="chk5">
+              <input type="checkbox" onchange="updateChecklist()">
+              <span class="check-item-label"><strong>Manager approval obtained</strong> (if uncertain). Where I could not confirm compatibility, I obtained written approval before proceeding.</span>
+            </label>
+          </div>
+
+          <div class="tool-form">
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">External code source (URL or description)</span>
+                <input class="form-input" id="pf_source" placeholder="e.g. github.com/owner/repo" oninput="renderPreflight()">
+              </div>
+              <div class="form-group">
+                <span class="form-label">Licence</span>
+                <select class="form-select" id="pf_licence" onchange="renderPreflight()">
+                  <option value="">Select licence...</option>
+                  <option>MIT</option>
+                  <option>Apache 2.0</option>
+                  <option>GPL v2</option>
+                  <option>GPL v3</option>
+                  <option>LGPL</option>
+                  <option>BSD 2-Clause</option>
+                  <option>BSD 3-Clause</option>
+                  <option>ISC</option>
+                  <option>MPL 2.0</option>
+                  <option>Unlicense / Public Domain</option>
+                  <option>No licence found</option>
+                  <option>Other (see notes)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">Compatible with this codebase?</span>
+                <select class="form-select" id="pf_compat" onchange="renderPreflight()">
+                  <option value="">Select...</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No — flagged with manager">No — flagged with manager</option>
+                  <option value="Uncertain — manager approval pending">Uncertain — manager approval pending</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Attribution added to repo?</span>
+                <select class="form-select" id="pf_attrib" onchange="renderPreflight()">
+                  <option value="">Select...</option>
+                  <option value="Yes">Yes</option>
+                  <option value="Not required by this licence">Not required by this licence</option>
+                  <option value="No — pending">No — pending</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">Manager approval (initials, or N/A)</span>
+                <input class="form-input" id="pf_mgr" placeholder="e.g. J.S. or N/A" oninput="renderPreflight()">
+              </div>
+              <div class="form-group">
+                <span class="form-label">Notes (optional)</span>
+                <input class="form-input" id="pf_notes" placeholder="Any caveats or context" oninput="renderPreflight()">
+              </div>
+            </div>
+          </div>
+
+          <div class="output-block">
+            <div class="output-label">
+              PR Template Output
+              <button class="copy-btn" onclick="copyOutput('pf_output', this)">Copy</button>
+            </div>
+            <pre class="output-pre" id="pf_output"></pre>
+          </div>
+          <button class="tool-reset" onclick="resetTool('toolA')">Clear fields</button>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────
+           TOOL B: AI AUTHORSHIP LOG
+      ───────────────────────────────────── -->
+      <div class="tool-card" id="toolB">
+        <div class="tool-card-header">
+          <span class="tool-number">Tool B</span>
+          <div class="tool-header-text">
+            <div class="tool-title">AI Authorship Log</div>
+            <div class="tool-purpose">Creates an auditable record of human involvement whenever AI tools contribute to your codebase. Supports copyright claims and satisfies emerging transparency obligations. Add the output block to the top of your PR description or commit message.</div>
+          </div>
+        </div>
+        <div class="tool-body">
+          <div class="tool-form">
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">Module or file path</span>
+                <input class="form-input" id="ai_module" placeholder="e.g. src/auth/tokenValidator.ts" oninput="renderAILog()">
+              </div>
+              <div class="form-group">
+                <span class="form-label">Prompt author (initials)</span>
+                <input class="form-input" id="ai_author" placeholder="e.g. H.C." oninput="renderAILog()">
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <span class="form-label">Prompt summary (one line)</span>
+                <input class="form-input" id="ai_prompt" placeholder="e.g. Generate a JWT validation middleware with expiry check" oninput="renderAILog()">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">AI output incorporated?</span>
+                <select class="form-select" id="ai_used" onchange="renderAILog()">
+                  <option value="">Select...</option>
+                  <option value="Yes — used substantially as generated">Yes — used substantially as generated</option>
+                  <option value="Yes — used with significant edits">Yes — used with significant edits</option>
+                  <option value="Yes — used as reference only; code rewritten">Yes — used as reference only; code rewritten</option>
+                  <option value="No — discarded">No — discarded</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Reviewer (initials)</span>
+                <input class="form-input" id="ai_reviewer" placeholder="e.g. T.W." oninput="renderAILog()">
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <span class="form-label">Human edits made (brief description)</span>
+                <textarea class="form-textarea" id="ai_edits" placeholder="e.g. Replaced hardcoded secret key with env variable; added error boundary; refactored loop logic" oninput="renderAILog()"></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">AI tool used</span>
+                <select class="form-select" id="ai_tool" onchange="renderAILog()">
+                  <option value="">Select...</option>
+                  <option>GitHub Copilot</option>
+                  <option>ChatGPT (GPT-4)</option>
+                  <option>Claude</option>
+                  <option>Gemini</option>
+                  <option>Amazon CodeWhisperer</option>
+                  <option>Cursor</option>
+                  <option>Other (see notes)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Human authorship level</span>
+                <select class="form-select" id="ai_level" onchange="renderAILog()">
+                  <option value="">Select...</option>
+                  <option value="High — AI used for suggestions only; substantial human rewrite">High — AI used for suggestions only; substantial human rewrite</option>
+                  <option value="Medium — AI drafted; human edited and reviewed">Medium — AI drafted; human edited and reviewed</option>
+                  <option value="Low — AI generated most output; minimal human changes">Low — AI generated most output; minimal human changes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="output-block">
+            <div class="output-label">
+              Commit / PR Block Output
+              <button class="copy-btn" onclick="copyOutput('ai_output', this)">Copy</button>
+            </div>
+            <pre class="output-pre" id="ai_output"></pre>
+          </div>
+          <button class="tool-reset" onclick="resetTool('toolB')">Clear fields</button>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────
+           TOOL C: SIDE-PROJECT CARVE-OUT
+      ───────────────────────────────────── -->
+      <div class="tool-card" id="toolC">
+        <div class="tool-card-header">
+          <span class="tool-number">Tool C</span>
+          <div class="tool-header-text">
+            <div class="tool-title">Side-Project Carve-out Request</div>
+            <div class="tool-purpose">Generates a written permission request for personal projects that might otherwise fall within your employer's IP clause. Getting written approval before you start is far simpler than disputing ownership after the fact. See Chapter 1 of the handbook.</div>
+          </div>
+        </div>
+        <div class="tool-body">
+          <div class="tool-form">
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">Your name</span>
+                <input class="form-input" id="co_name" placeholder="e.g. Alex Chen" oninput="renderCarveout()">
+              </div>
+              <div class="form-group">
+                <span class="form-label">Your role</span>
+                <input class="form-input" id="co_role" placeholder="e.g. Junior Developer" oninput="renderCarveout()">
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <span class="form-label">Project name</span>
+                <input class="form-input" id="co_project" placeholder="e.g. TaskFlow — personal productivity app" oninput="renderCarveout()">
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <span class="form-label">Project summary (one or two sentences)</span>
+                <textarea class="form-textarea" id="co_summary" placeholder="e.g. A mobile app that helps individuals track daily habits. Unrelated to my employer's products or business." oninput="renderCarveout()"></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">Company resources used?</span>
+                <select class="form-select" id="co_resources" onchange="renderCarveout()">
+                  <option value="">Select...</option>
+                  <option value="None — developed entirely on personal time and equipment">None — developed entirely on personal time and equipment</option>
+                  <option value="Personal time only; employer software licences used incidentally">Personal time only; employer software licences used incidentally</option>
+                  <option value="Minimal — to be clarified with manager">Minimal — to be clarified with manager</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <span class="form-label">Intended use of project</span>
+                <select class="form-select" id="co_intent" onchange="renderCarveout()">
+                  <option value="">Select...</option>
+                  <option value="Personal use and portfolio only">Personal use and portfolio only</option>
+                  <option value="Open source publication">Open source publication</option>
+                  <option value="Potential future commercialisation">Potential future commercialisation</option>
+                  <option value="Portfolio samples and publication">Portfolio samples and publication</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="form-group">
+                <span class="form-label">Proposed terms (what you are committing to)</span>
+                <textarea class="form-textarea" id="co_terms" placeholder="e.g. No company IP or confidential information will be used. No client data will be included. The project will not compete with my employer's products." oninput="renderCarveout()"></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <span class="form-label">Manager's name</span>
+                <input class="form-input" id="co_mgr" placeholder="e.g. Jordan Smith" oninput="renderCarveout()">
+              </div>
+              <div class="form-group">
+                <span class="form-label">Your employer's name</span>
+                <input class="form-input" id="co_employer" placeholder="e.g. Acme Technology Pty Ltd" oninput="renderCarveout()">
+              </div>
+            </div>
+          </div>
+
+          <div class="output-block" style="margin-bottom:12px;">
+            <div class="output-label">
+              Email to Manager
+              <button class="copy-btn" onclick="copyOutput('co_email', this)">Copy</button>
+            </div>
+            <pre class="output-pre" id="co_email"></pre>
+          </div>
+
+          <div class="output-block">
+            <div class="output-label">
+              Manager Approval Record (for manager to complete)
+              <button class="copy-btn" onclick="copyOutput('co_form', this)">Copy</button>
+            </div>
+            <pre class="output-pre" id="co_form"></pre>
+          </div>
+          <button class="tool-reset" onclick="resetTool('toolC')">Clear fields</button>
+        </div>
+      </div>
+
+    </div><!-- /tools-grid -->
+
+    <p class="colophon">Starting in Tech &nbsp; Legal Handbook, Toolkit & Assessment<br>These templates are for practical guidance only and do not constitute legal advice. Consult your employer's legal team for matters involving specific IP disputes.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     GLOSSARY PANEL
+══════════════════════════════════════════ -->
+<div id="panel-glossary" class="section-panel">
+  <div class="main">
+    <div class="section-heading">
+      <div class="eyebrow">Reference</div>
+      <h2>Glossary of Terms</h2>
+      <p>Key legal and technical terms used in this handbook, explained in plain English.</p>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">A</span>
+      <div class="glossary-entry"><span class="glossary-term">APP</span><span class="glossary-def">Australian Privacy Principle. A set of rules under the <em>Privacy Act 1988</em> (Cth) that govern how organisations collect, use, store, and disclose personal information.</span></div>
+      <div class="glossary-entry"><span class="glossary-term">Attribution</span><span class="glossary-def">Giving credit to the original creator of a work. Most open source licences require you to include the original copyright notice when you use the code.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">C</span>
+      <div class="glossary-entry"><span class="glossary-term">Confidential information</span><span class="glossary-def">Information that is not publicly known and is subject to obligations of secrecy, whether through a contract, equity, or statute.</span></div>
+      <div class="glossary-entry"><span class="glossary-term">Copyleft</span><span class="glossary-def">A type of open source licence, such as the GPL, that requires anyone who distributes modified versions of the software to also make their source code available under the same licence.</span></div>
+      <div class="glossary-entry"><span class="glossary-term">Copyright</span><span class="glossary-def">The legal right to control who can copy, modify, or distribute a creative work. In Australia, it arises automatically when an original work is created. No registration is required.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">D</span>
+      <div class="glossary-entry"><span class="glossary-term">Duty of confidence</span><span class="glossary-def">A legal obligation not to misuse information received in circumstances of confidence. Recognised by Australian courts even without a written contract.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">E</span>
+      <div class="glossary-entry"><span class="glossary-term">Equitable duty</span><span class="glossary-def">An obligation recognised by courts of equity, as distinct from statute or contract. The duty of confidence is the most relevant example in this handbook.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">G</span>
+      <div class="glossary-entry"><span class="glossary-term">GPL</span><span class="glossary-def">GNU General Public Licence. An open source licence that requires you to release the source code of any software that incorporates GPL-licensed code, if you distribute it. Often called a viral licence.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">I</span>
+      <div class="glossary-entry"><span class="glossary-term">IP</span><span class="glossary-def">Intellectual property. A broad term covering legal rights in creative works (copyright), inventions (patents), brands (trade marks), and confidential information.</span></div>
+      <div class="glossary-entry"><span class="glossary-term">IP assignment clause</span><span class="glossary-def">A clause in an employment or contractor agreement that transfers ownership of intellectual property from the creator to the employer or client.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">L</span>
+      <div class="glossary-entry"><span class="glossary-term">Literary work</span><span class="glossary-def">Under the <em>Copyright Act 1968</em> (Cth), any work expressed in words, figures, or symbols, including software source code.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">M</span>
+      <div class="glossary-entry"><span class="glossary-term">MIT Licence</span><span class="glossary-def">A permissive open source licence that allows almost unrestricted use, modification, and distribution, as long as the original copyright notice is included.</span></div>
+      <div class="glossary-entry"><span class="glossary-term">Moral rights</span><span class="glossary-def">Rights that belong to the author of a work personally. These include the right to be named as author and the right not to have the work treated in a degrading way. They cannot be sold or transferred.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">O</span>
+      <div class="glossary-entry"><span class="glossary-term">OAIC</span><span class="glossary-def">Office of the Australian Information Commissioner. The federal body that regulates privacy and freedom of information in Australia.</span></div>
+      <div class="glossary-entry"><span class="glossary-term">Open source</span><span class="glossary-def">Software whose source code is made publicly available under a licence that permits use, modification, and distribution. Different open source licences impose different conditions.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">P</span>
+      <div class="glossary-entry"><span class="glossary-term">Permissive licence</span><span class="glossary-def">A type of open source licence, such as MIT or Apache 2.0, that allows use in proprietary software with few restrictions, typically just attribution.</span></div>
+      <div class="glossary-entry"><span class="glossary-term">Personal information</span><span class="glossary-def">Under the <em>Privacy Act 1988</em> (Cth), any information or opinion about an identified individual, or an individual who is reasonably identifiable.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">S</span>
+      <div class="glossary-entry"><span class="glossary-term">s 35(6)</span><span class="glossary-def">Section 35(6) of the <em>Copyright Act 1968</em> (Cth). The rule that gives employers automatic copyright ownership of works created by employees in the course of their employment.</span></div>
+    </div>
+    <div class="glossary-letter-group">
+      <span class="glossary-letter">T</span>
+      <div class="glossary-entry"><span class="glossary-term">Trade secret</span><span class="glossary-def">Confidential information that has commercial value because it is secret. Protected even after employment ends. Examples include proprietary algorithms, client lists, and pricing models.</span></div>
+    </div>
+    <p class="colophon">Starting in Tech &nbsp; Legal Handbook, Toolkit & Assessment<br>For educational purposes only. Does not constitute legal advice.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BIBLIOGRAPHY PANEL
+══════════════════════════════════════════ -->
+<div id="panel-bibliography" class="section-panel">
+  <div class="main">
+    <div class="section-heading">
+      <div class="eyebrow">Reference</div>
+      <h2>Bibliography</h2>
+      <p>Primary legal sources, secondary literature, and regulatory guidance relied upon in this handbook.</p>
+    </div>
+    <div class="bib-section">
+      <div class="bib-section-title">Legislation</div>
+      <div class="bib-entry"><span class="bib-tag">Cth</span><em>Copyright Act 1968</em> (Cth)</div>
+      <div class="bib-entry"><span class="bib-tag">Cth</span><em>Patents Act 1990</em> (Cth)</div>
+      <div class="bib-entry"><span class="bib-tag">Cth</span><em>Privacy Act 1988</em> (Cth)</div>
+      <div class="bib-entry"><span class="bib-tag">Cth</span><em>Privacy and Other Legislation Amendment Act 2024</em> (Cth)</div>
+      <div class="bib-entry"><span class="bib-tag">Cth</span><em>Corporations Act 2001</em> (Cth), ss 182, 183</div>
+      <div class="bib-entry"><span class="bib-tag">EU</span><em>Regulation (EU) 2024/1689 on Artificial Intelligence</em> (EU AI Act), entered into force August 2024</div>
+    </div>
+    <div class="bib-section">
+      <div class="bib-section-title">Cases: Australia</div>
+      <div class="bib-entry"><span class="bib-tag">HCA</span><em>Moorgate Tobacco Co Ltd v Philip Morris Ltd</em> (1984) 156 CLR 414</div>
+      <div class="bib-entry"><span class="bib-tag">FCA</span><em>Oceanroutes (Australia) Pty Ltd v Lamond</em> [1984] FCA</div>
+      <div class="bib-entry"><span class="bib-tag">FCAFC</span><em>Telstra Corporation Ltd v Phone Directories Company Pty Ltd</em> [2010] FCAFC 149</div>
+      <div class="bib-entry"><span class="bib-tag">FCA</span><em>Leica Geosystems Mining v Skea</em> [2014] FCA</div>
+      <div class="bib-entry"><span class="bib-tag">FCA</span><em>SAI Global v Johnstone</em> [2016] FCA 1333</div>
+      <div class="bib-entry"><span class="bib-tag">FCAFC</span><em>Commissioner of Patents v Thaler</em> [2022] FCAFC 62 (High Court refused special leave, November 2022)</div>
+      <div class="bib-entry"><span class="bib-tag">FCAFC</span><em>Motorola Solutions Inc v Hytera Communications Corporation Ltd</em> [2024] FCAFC 168</div>
+    </div>
+    <div class="bib-section">
+      <div class="bib-section-title">Cases: International</div>
+      <div class="bib-entry"><span class="bib-tag">US</span><em>Thaler v Vidal</em>, 43 F.4th 1207 (Fed. Cir. 2022)</div>
+      <div class="bib-entry"><span class="bib-tag">UK</span><em>Thaler v Comptroller-General of Patents, Designs and Trade Marks</em> [2023] UKSC 49</div>
+      <div class="bib-entry"><span class="bib-tag">FR</span><em>Entr'ouvert v Orange</em>, Paris Court of Appeal, February 2024</div>
+    </div>
+    <div class="bib-section">
+      <div class="bib-section-title">Books and Journal Articles</div>
+      <div class="bib-entry"><span class="bib-tag">Article</span>Ann Monotti, <em>Who Owns My Research and Inventions?</em> (2006) 28 <em>Sydney Law Review</em> 129</div>
+      <div class="bib-entry"><span class="bib-tag">Article</span>Kayleen Manwaring, <em>Will Emerging Information Technologies Outpace Consumer Protection Law?</em> (2018) 26 <em>Competition and Consumer Law Journal</em> 141</div>
+      <div class="bib-entry"><span class="bib-tag">Chapter</span>Jyh-An Lee and Reto Hilty, <em>Artificial Intelligence and Copyright</em> (2023) in <em>Oxford Handbook of AI Governance</em>, Oxford University Press</div>
+    </div>
+    <div class="bib-section">
+      <div class="bib-section-title">Regulatory Guidance and Reports</div>
+      <div class="bib-entry"><span class="bib-tag">OAIC</span>Office of the Australian Information Commissioner, <em>Guidance on the use of commercially available AI products</em> (October 2024)</div>
+      <div class="bib-entry"><span class="bib-tag">US Copyright Office</span>US Copyright Office, <em>Copyright and Artificial Intelligence: Policy Considerations</em> (February 2023)</div>
+      <div class="bib-entry"><span class="bib-tag">Industry</span>Cisco, <em>2024 Data Privacy Benchmark Study</em> (2024)</div>
+      <div class="bib-entry"><span class="bib-tag">EPO</span>European Patent Office Board of Appeal, DABUS decisions (2022)</div>
+    </div>
+    <p class="colophon">Starting in Tech &nbsp; Legal Handbook, Toolkit & Assessment<br>For educational purposes only. Does not constitute legal advice.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+/* ── TAB SWITCHING ── */
+function switchTab(name) {
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.getAttribute('onclick').includes("'" + name + "'")) b.classList.add('active');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── COPY TO CLIPBOARD ── */
+function copyOutput(id, btn) {
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+/* ── RESET TOOL ── */
+function resetTool(cardId) {
+  const card = document.getElementById(cardId);
+  card.querySelectorAll('input, textarea').forEach(el => el.value = '');
+  card.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+  card.querySelectorAll('input[type=checkbox]').forEach(el => {
+    el.checked = false;
+    el.closest('.check-item')?.classList.remove('checked');
+  });
+  if (cardId === 'toolA') { updateChecklist(); renderPreflight(); }
+  if (cardId === 'toolB') renderAILog();
+  if (cardId === 'toolC') { renderCarveout(); }
+}
+
+/* ── HELPER ── */
+function v(id) { return (document.getElementById(id)?.value || '').trim(); }
+function ph(text) { return text || '____________'; }
+
+/* ══════════════════════════
+   TOOL A: PRE-FLIGHT
+══════════════════════════ */
+function updateChecklist() {
+  const items = document.querySelectorAll('#preflightList .check-item');
+  let done = 0;
+  items.forEach(item => {
+    const cb = item.querySelector('input[type=checkbox]');
+    if (cb.checked) { item.classList.add('checked'); done++; }
+    else            { item.classList.remove('checked'); }
+  });
+  document.getElementById('checkDone').textContent = done;
+  renderPreflight();
+}
+
+function renderPreflight() {
+  const source  = v('pf_source')  || '____________';
+  const lic     = v('pf_licence') || '____________';
+  const compat  = v('pf_compat')  || '____________';
+  const attrib  = v('pf_attrib')  || '____________';
+  const mgr     = v('pf_mgr')     || '____________';
+  const notes   = v('pf_notes');
+
+  const items   = document.querySelectorAll('#preflightList .check-item');
+  const labels  = ['Licence identified','Licence compatible','Attribution added','Not from prior employer','University IP checked','Manager approval (if uncertain)'];
+  const checks  = Array.from(items).map((item, i) => {
+    const cb = item.querySelector('input[type=checkbox]');
+    return (cb.checked ? '[x]' : '[ ]') + ' ' + labels[i];
+  });
+
+  let out = `PRE-FLIGHT EXTERNAL CODE CHECK\n`;
+  out += `${'='.repeat(38)}\n\n`;
+  out += checks.join('\n') + '\n\n';
+  out += `Source:          ${source}\n`;
+  out += `Licence:         ${lic}\n`;
+  out += `Compatible:      ${compat}\n`;
+  out += `Attribution:     ${attrib}\n`;
+  out += `Manager:         ${mgr}\n`;
+  if (notes) out += `Notes:           ${notes}\n`;
+  out += `\nDate:            ${new Date().toLocaleDateString('en-AU')}`;
+  document.getElementById('pf_output').textContent = out;
+}
+
+/* ══════════════════════════
+   TOOL B: AI LOG
+══════════════════════════ */
+function renderAILog() {
+  const module   = v('ai_module')   || '____________';
+  const author   = v('ai_author')   || '____';
+  const prompt   = v('ai_prompt')   || '____________';
+  const used     = v('ai_used')     || '____________';
+  const reviewer = v('ai_reviewer') || '____';
+  const edits    = v('ai_edits')    || '____________';
+  const tool     = v('ai_tool')     || '____________';
+  const level    = v('ai_level')    || '____________';
+
+  let out = `AI-AUTHORSHIP LOG\n`;
+  out += `${'='.repeat(38)}\n\n`;
+  out += `Module:            ${module}\n`;
+  out += `AI tool used:      ${tool}\n`;
+  out += `Prompt author:     ${author}\n`;
+  out += `Prompt summary:    "${prompt}"\n`;
+  out += `AI output used:    ${used}\n`;
+  out += `Human edits:       ${edits}\n`;
+  out += `Human authorship:  ${level}\n`;
+  out += `Reviewer:          ${reviewer}\n`;
+  out += `Date:              ${new Date().toLocaleDateString('en-AU')}\n\n`;
+  out += `NOTE: This log supports copyright claims over human-authored\n`;
+  out += `contributions and satisfies emerging AI transparency obligations.\n`;
+  out += `See Starting in Tech, Chapter 4.`;
+  document.getElementById('ai_output').textContent = out;
+}
+
+/* ══════════════════════════
+   TOOL C: CARVE-OUT
+══════════════════════════ */
+function renderCarveout() {
+  const name      = v('co_name')      || '____________';
+  const role      = v('co_role')      || '____________';
+  const project   = v('co_project')   || '____________';
+  const summary   = v('co_summary')   || '____________';
+  const resources = v('co_resources') || '____________';
+  const intent    = v('co_intent')    || '____________';
+  const terms     = v('co_terms')     || '____________';
+  const mgr       = v('co_mgr')       || '____________';
+  const employer  = v('co_employer')  || '____________';
+
+  /* Email */
+  let email = `Subject: Carve-out request for personal project: ${project}\n\n`;
+  email += `Dear ${mgr},\n\n`;
+  email += `I am writing to request written confirmation that my personal project described below is excluded from ${employer}'s IP assignment clause and will remain my own property.\n\n`;
+  email += `My role:           ${role}\n`;
+  email += `Project name:      ${project}\n`;
+  email += `Project summary:   ${summary}\n`;
+  email += `Resources used:    ${resources}\n`;
+  email += `Intended use:      ${intent}\n\n`;
+  email += `Proposed terms:\n${terms}\n\n`;
+  email += `I am happy to discuss this further at a time that suits you. Please confirm your approval by replying to this email or signing the form attached.\n\n`;
+  email += `Kind regards,\n${name}`;
+
+  /* Manager form */
+  let form = `SIDE-PROJECT CARVE-OUT APPROVAL FORM\n`;
+  form += `${'='.repeat(38)}\n\n`;
+  form += `Employee name:     ${name}\n`;
+  form += `Employee role:     ${role}\n`;
+  form += `Project name:      ${project}\n`;
+  form += `Repo or link:      ____________\n`;
+  form += `Resources used:    ${resources}\n`;
+  form += `Intended use:      ${intent}\n\n`;
+  form += `Proposed terms:\n${terms}\n\n`;
+  form += `${'_'.repeat(38)}\n`;
+  form += `Manager decision\n\n`;
+  form += `[ ] Approved as proposed\n`;
+  form += `[ ] Approved with amendments (see below)\n`;
+  form += `[ ] Not approved (see below)\n\n`;
+  form += `Notes / amendments:\n\n\n\n`;
+  form += `Manager name:      ____________\n`;
+  form += `Signature:         ____________\n`;
+  form += `Date:              ____________`;
+
+  document.getElementById('co_email').textContent = email;
+  document.getElementById('co_form').textContent  = form;
+}
+
+/* ══════════════════════════
+   QUIZ
+══════════════════════════ */
+const QUESTIONS_RAW = [
+  { chapter:"Chapter 1: Code Ownership", text:"You spend a Sunday morning building a personal deployment tool at home, on your own laptop. It automates a task that closely mirrors your day-to-day responsibilities at work. Which statement most accurately reflects the legal position?", options:["You own it because you used personal equipment outside business hours.","Your employer likely owns it because the decisive question is whether the work falls within your employment duties, not when or where it was created.","Ownership is shared between you and your employer in proportion to the resources each contributed.","Neither party owns it until you choose to deploy it in a professional context."], answer:1, explanation:"Under s 35(6) of the Copyright Act, the test is <strong>scope of employment</strong>, not time or place. If coding that type of tool falls within your role, it likely belongs to your employer even if you wrote it at 2am on a personal laptop." },
+  { chapter:"Chapter 1: Code Ownership", text:"Even when your employer holds copyright in code you wrote, you retain certain rights that cannot be sold or transferred. Which scenario correctly describes the <em>limit</em> of those retained rights?", options:["You can veto your employer from modifying the code in ways you disagree with.","You can demand a share of revenue if the code is commercialised.","You can be identified as the author and object to treatment that damages your reputation, but you can consent in writing to your employer not crediting you.","You can reclaim full copyright ownership once you leave the company."], answer:2, explanation:"Moral rights give you the right of attribution and the right of integrity, but they cannot be transferred. You <em>can</em> consent to non-attribution in an employment agreement, and this is common in tech workplaces." },
+  { chapter:"Chapter 2: Reusing Code", text:"The <em>Hytera v Motorola</em> decision confirmed something that surprises many developers. What was the key finding?", options:["Copyright infringement requires copying code verbatim; rewriting automatically creates a new work.","Even substantially rewritten code can infringe a substantial part of the original if it was produced using the original as a reference.","Liability was limited to the engineer who physically copied the files, not the company that employed him.","The case was decided on trade secrets law rather than copyright and therefore does not apply to ordinary software development."], answer:1, explanation:"The Full Federal Court confirmed that using a competitor's source code as a reference can reproduce a substantial part of the original even where no line-for-line copying occurred. The trial judge described Hytera's conduct as substantial industrial theft." },
+  { chapter:"Chapter 2: Reusing Code", text:"A developer discovers a useful snippet on GitHub with no visible licence file. According to the handbook's pre-flight checklist, what is the correct course of action?", options:["Treat it as public domain because the absence of a licence means there are no restrictions.","Assume it uses the MIT licence, since that is the most common permissive licence on GitHub.","Email the repository owner to request clarification before using it.","Do not use it. If you cannot identify the licence, the handbook's guidance is not to proceed."], answer:3, explanation:"The pre-flight checklist is explicit: <strong>if you cannot identify the licence, do not use it.</strong> No licence file does not mean no rights. Copyright in the code still belongs to its author automatically under Australian law." },
+  { chapter:"Chapter 2: Reusing Code", text:"What makes GPL-licensed code fundamentally riskier to incorporate into a proprietary project than MIT-licensed code, even if both are described as open source?", options:["GPL code attracts a per-user royalty fee that MIT code does not.","MIT code can only be used by individuals, whereas GPL is available to companies.","Incorporating and distributing GPL code may legally require your employer to release the entire combined codebase under the same licence.","GPL code can only be used in government or not-for-profit projects."], answer:2, explanation:"This is the GPL's viral effect. If you incorporate GPL code into a proprietary product and distribute it, the GPL requires you to make the <em>entire</em> combined source code available under the GPL. The <em>Entr'ouvert v Orange</em> case shows this is actively enforced." },
+  { chapter:"Chapter 3: AI Tools at Work", text:"A developer argues: <em>I checked and the AI tool's terms of service say it will not use my inputs to train future models. So pasting client data into it is fine.</em> What is the most legally accurate response?", options:["The developer is correct because contractual assurances from the AI provider eliminate any legal risk.","The privacy concern disappears, but the employment contract's confidentiality clause may still be breached.","The act of transmitting personal information outside the employer's systems falls outside the primary purpose of collection under APP 6, regardless of what happens to the data afterwards.","This is only a problem if the AI tool is hosted overseas."], answer:2, explanation:"Under APP 6, personal information can only be used or disclosed for the purpose for which it was collected. Sending it to a third-party AI tool almost certainly falls outside that purpose <strong>regardless</strong> of what the AI vendor promises to do with it afterwards. The transmission itself is the potential breach." },
+  { chapter:"Chapter 3: AI Tools at Work", text:"The Privacy and Other Legislation Amendment Act 2024 introduced a new statutory tort commencing 10 June 2025. How does this change the practical risk landscape for employees who mishandle personal data?", options:["It removes the need for the OAIC to investigate before a penalty is imposed.","Individuals affected by a privacy breach can now bring a personal civil claim rather than relying solely on regulatory action by the OAIC.","It creates criminal liability for any use of personal data in AI tools.","Employers must now obtain individual consent before employees can use any generative AI product."], answer:1, explanation:"Previously, individuals largely had to rely on the OAIC to pursue complaints. The new statutory tort means a person whose privacy is seriously invaded can now <strong>sue directly</strong> in court, raising the stakes significantly for anyone who mishandles personal data." },
+  { chapter:"Chapter 4: AI-Generated Code", text:"Your manager says: <em>Do not worry. We wrote some of the code ourselves, so the whole codebase is protected.</em> Why is this reasoning legally incomplete?", options:["It is correct because any human contribution to a codebase is sufficient to protect the entire work.","Copyright protection extends to every file, but only if the human-authored and AI-authored portions are held in separate repositories.","The AI-generated portions may have no copyright protection at all, meaning competitors could potentially copy those specific portions without infringing anything.","The manager's statement would be accurate if the company had formally registered the copyright."], answer:2, explanation:"Copyright protection does not flow from human-authored portions to AI-generated ones. Each portion stands on its own. Where AI generated code with minimal human input, <strong>copyright may simply not subsist</strong> in those parts, leaving them potentially copyable by anyone." },
+  { chapter:"Chapter 4: AI-Generated Code", text:"The handbook distinguishes between AI-generated code having no copyright and being in the public domain. Why does this distinction matter in practice?", options:["It makes no practical difference because both mean anyone can freely copy and use the code.","Public domain status carries established rules and precedents. Having no copyright leaves the legal status genuinely uncertain, which creates unpredictable risk rather than clear freedom to use.","Code with no copyright can be relicensed by whoever uses it first, whereas public domain code cannot.","The distinction only applies to literary works and does not extend to software."], answer:1, explanation:"Public domain is a well-understood legal category with settled rules. Having no copyright is different because the legal status is <strong>unresolved</strong>. This uncertainty cuts both ways: you cannot rely on the code being freely usable, and you cannot rely on it being protected." },
+  { chapter:"Chapter 5: Confidential Information", text:"In <em>SAI Global v Johnstone</em>, the defendant was found liable even though he never used the copied client information at his new job. What is the critical legal principle illustrated?", options:["Breach of confidence only occurs when confidential information is actually deployed against a former employer's interests.","The breach is complete at the moment of unauthorised copying or disclosure. Subsequent non-use does not undo the violation.","Liability under ss 182 and 183 of the Corporations Act is limited to directors and senior officers, not ordinary employees.","The case would have been decided differently if the defendant had returned the USB drive before starting his new role."], answer:1, explanation:"Copying the files <em>was</em> the breach. Non-use is irrelevant. Companies routinely audit file access and USB activity during an employee's notice period. They do not need to prove the information was used, only that it was taken." },
+  { chapter:"Chapter 5: Confidential Information", text:"A developer says: <em>I am taking the Kubernetes skills I developed here to my next job. I am also taking the microservices architecture diagrams I personally designed.</em> Which part creates legal risk, and why?", options:["Both parts are problematic because all knowledge acquired during employment belongs to the employer.","Neither part is problematic because employees are always entitled to take their own intellectual output.","The skills are fine to take. The diagrams are not, because specific proprietary system design falls into the trade secrets category, which remains protected regardless of who created it.","The diagrams are only protected if they are marked as confidential by the employer."], answer:2, explanation:"General skills such as knowing how to use Kubernetes become part of your professional toolkit and travel with you. A specific architecture diagram encodes proprietary information about how a particular employer's system is built. That is a trade secret, protected indefinitely." },
+  { chapter:"Synthesis: Chapters 3 and 5", text:"You paste your employer's proprietary source code into ChatGPT to diagnose a bug. Setting aside any IT security policy, which statement most accurately captures the full legal exposure?", options:["The only risk is a potential breach of your employment contract's confidentiality clause.","There is no risk because you are the author of the code and retain moral rights in it.","There is a risk under APP 6 only if the code happens to contain personal information about identifiable individuals.","A single act of pasting could simultaneously breach your employment contract, the equitable duty of confidence, and ss 182 and 183 of the Corporations Act, the same analysis that applies to copying files to a USB drive."], answer:3, explanation:"Chapter 5 draws this connection explicitly: entering confidential information into an AI tool is a <em>disclosure to a third party</em>. The legal analysis is identical to physical copying. It can simultaneously breach the contract, equity, and the Corporations Act." }
+];
+
+const CHAPTER_MAP = [
+  { name:"Chapter 1: Who owns the code I write at work?",       qs:[0,1]     },
+  { name:"Chapter 2: Can I reuse code from uni or a past job?", qs:[2,3,4]   },
+  { name:"Chapter 3: Can I use ChatGPT with work material?",    qs:[5,6]     },
+  { name:"Chapter 4: Does AI-generated code have copyright?",   qs:[7,8]     },
+  { name:"Chapter 5: What counts as confidential information?", qs:[9,10,11] }
+];
+const LETTERS = ['A','B','C','D'];
+
+function shuffled(q) {
+  const pool = q.options.map((text, i) => ({ text, correct: i === q.answer }));
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return { options: pool.map(o => o.text), answer: pool.findIndex(o => o.correct) };
+}
+
+const SESSION = QUESTIONS_RAW.map(q => { const s = shuffled(q); return { ...q, ...s }; });
+let current = 0, score = 0;
+let answered = new Array(SESSION.length).fill(null);
+const container = document.getElementById('quizContainer');
+const results   = document.getElementById('results');
+const fill      = document.getElementById('barFill');
+const lbl       = document.getElementById('statusLabel');
+const scoreEl   = document.getElementById('statusScore');
+
+function buildQuiz() {
+  container.innerHTML = '';
+  SESSION.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card' + (i === 0 ? ' active' : '');
+    card.id = 'card' + i;
+    const opts = q.options.map((text, j) => `
+      <button class="option-btn" id="opt_${i}_${j}" onclick="pick(${i},${j})">
+        <span class="option-letter">${LETTERS[j]}</span>
+        <span class="option-text">${text}</span>
+        <span class="option-badge" id="badge_${i}_${j}"></span>
+      </button>`).join('');
+    card.innerHTML = `
+      <div class="q-header">
+        <span class="q-chapter-tag">${q.chapter}</span>
+        <span class="q-counter">Q${i+1} / ${SESSION.length}</span>
+      </div>
+      <p class="q-text">${q.text}</p>
+      <div class="options">${opts}</div>
+      <div class="annotation" id="ann${i}">
+        <div class="annotation-label">Commentary</div>
+        <p>${q.explanation}</p>
+      </div>
+      <div class="nav-row">
+        <button class="next-btn" id="nxt${i}" onclick="advance(${i})">
+          ${i < SESSION.length - 1 ? 'Next Question' : 'View Results'}
+        </button>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function pick(qi, oi) {
+  if (answered[qi] !== null) return;
+  answered[qi] = oi;
+  const correct = SESSION[qi].answer;
+  if (oi === correct) score++;
+  SESSION[qi].options.forEach((_, j) => {
+    const btn   = document.getElementById('opt_'   + qi + '_' + j);
+    const badge = document.getElementById('badge_' + qi + '_' + j);
+    btn.classList.add('disabled');
+    if      (j === correct && j === oi) { btn.classList.add('correct'); badge.textContent = 'Correct'; }
+    else if (j === oi)                  { btn.classList.add('wrong');   badge.textContent = 'Incorrect'; }
+    else if (j === correct)             { btn.classList.add('missed'); }
+  });
+  document.getElementById('ann' + qi).classList.add('visible');
+  document.getElementById('nxt' + qi).classList.add('visible');
+  updateStatus();
+}
+
+function advance(from) {
+  document.getElementById('card' + from).classList.remove('active');
+  const next = from + 1;
+  if (next < SESSION.length) {
+    document.getElementById('card' + next).classList.add('active');
+    current = next;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateStatus();
+  } else { showResults(); }
+}
+
+function updateStatus() {
+  const done = answered.filter(a => a !== null).length;
+  fill.style.width    = ((done / SESSION.length) * 100) + '%';
+  lbl.textContent     = `Question ${Math.min(current + 1, SESSION.length)} of ${SESSION.length}`;
+  scoreEl.textContent = `${score} correct`;
+}
+
+function showResults() {
+  container.style.display = 'none';
+  results.classList.add('active');
+  fill.style.width = '100%';
+  lbl.textContent  = 'Assessment Complete';
+  scoreEl.textContent = `${score} / ${SESSION.length}`;
+  const pct = Math.round((score / SESSION.length) * 100);
+  let verdict, msg;
+  if      (pct >= 90) { verdict = "Outstanding.";           msg = "You have demonstrated a thorough and applied understanding of this material across all five chapters."; }
+  else if (pct >= 75) { verdict = "Proficient.";             msg = "You have a sound grasp of the core principles. Review the chapters behind any questions you missed."; }
+  else if (pct >= 58) { verdict = "Adequate.";               msg = "You have absorbed the foundational ideas. A second reading of the chapters where you erred will strengthen your understanding."; }
+  else                { verdict = "Further Study Required."; msg = "The legal landscape covered here is genuinely complex. Revisit the relevant chapters before proceeding."; }
+  const rows = CHAPTER_MAP.map(ch => {
+    const pips = ch.qs.map(qi => {
+      const right = answered[qi] === SESSION[qi].answer;
+      return `<div class="pip ${right ? 'right' : 'wrong'}">${right ? '&#10003;' : '&#10007;'}</div>`;
+    }).join('');
+    return `<div class="chapter-row"><span class="chapter-name">${ch.name}</span><div class="chapter-pips">${pips}</div></div>`;
+  }).join('');
+  results.innerHTML = `
+    <div class="results-masthead">
+      <div class="results-top">
+        <div class="results-eyebrow">Assessment Result</div>
+        <div class="results-verdict">${verdict}</div>
+        <div class="results-frac">${score} of ${SESSION.length} correct &nbsp; ${pct}%</div>
+        <p class="results-msg">${msg}</p>
+      </div>
+      <div class="results-bottom">
+        <div class="results-bottom-label">Performance by Chapter</div>${rows}
+      </div>
+    </div>
+    <button class="restart-btn" onclick="restart()">Restart Assessment</button>`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restart() {
+  current = 0; score = 0;
+  answered = new Array(SESSION.length).fill(null);
+  QUESTIONS_RAW.forEach((q, i) => { const s = shuffled(q); SESSION[i].options = s.options; SESSION[i].answer = s.answer; });
+  results.classList.remove('active');
+  results.innerHTML = '';
+  container.style.display = 'block';
+  buildQuiz();
+  fill.style.width = '0%';
+  lbl.textContent  = 'Question 1 of 12';
+  scoreEl.textContent = '0 correct';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* Initialise */
+buildQuiz();
+renderPreflight();
+renderAILog();
+renderCarveout();
+</script>
+</body>
+</html>
